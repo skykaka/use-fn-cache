@@ -69,5 +69,10 @@
   },
   "dependencies": {
     "array-equal": "^1.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skykaka/use-fn-cache.git"
+  },
+  "homepage": "https://github.com/skykaka/use-fn-cache.git"
 }
