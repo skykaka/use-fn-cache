@@ -8,35 +8,56 @@ const App = () => {
   const [value1, setValue1] = React.useState(0);
   const [value2, setValue2] = React.useState(0);
 
-  return <div>
+  return <div style={{textAlign: 'center'}}>
     <button onClick={() => setValue1(x => (x + 1) % 5)}>
       change value1
     </button>
-    <button onClick={() => setValue2(x => (x + 1) % 5)}>
+    <button onClick={() => setValue2(x => (x + 1) % 5)} style={{marginLeft: 16}}>
       change value2
     </button>
-    <p>
-      <div>value1 = {value1}</div>
-      <div>value2 = {value2}</div>
-    </p>
-    <TestComp render={
-      fn('render1', () => 'This is a render using fnCache with no dependent. Not change forever!')
-    }/>
-    <TestComp render={() => 'This is a render using normal function. Change every time!'}/>
+    <div>
+      <p>value1 = {value1}</p>
+      <p>value2 = {value2}</p>
+    </div>
 
-    <TestComp render={
-      fn('render3', () => `This is a render using fnCache depending on variable value1. Change when the value1 is changed: value1=[${value1}]`, [value1])
-    }/>
+    <hr/>
+    <CacheWithoutDependent/>
+
+    <hr/>
+    <CacheWithDependent value={value1}/>
+
+    <hr/>
+    <WithoutCache/>
   </div>
 };
 
-const TestComp = React.memo((props: {render: () => string}) => {
+function WithoutCache() {
+  return <Message render={() => 'Without cache. Rerender every time!'}/>
+}
+
+function CacheWithoutDependent() {
+  const fn = useFnCache();
+
+  return <Message render={fn('render', () => 'Using cache with no dependent. Never rerender!')}/>
+}
+
+function CacheWithDependent(props: {value: number}) {
+  const fn = useFnCache();
+
+  return <Message render={fn('render', () => 'Using cache with value1 as dependent. Rerender when value1 is changed!', [props.value])}/>
+}
+
+const Message = React.memo((props: {render: () => React.ReactNode}) => {
 
   const countRef = React.useRef(0);
   countRef.current++;
 
   return <p>
-    <div>{props.render()}</div>
+    <div>
+        <p style={{margin: 16}}>
+          {props.render()}
+        </p>
+    </div>
     <div>render count: {countRef.current}</div>
   </p>
 
