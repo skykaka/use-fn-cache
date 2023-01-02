@@ -1,5 +1,13 @@
 {
   "version": "0.1.0",
+  "description": "Cache function in the JSX code. Reduce the unless rerender.",
+  "keywords": [
+    "react",
+    "cache",
+    "function",
+    "render",
+    "callback"
+  ],
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
